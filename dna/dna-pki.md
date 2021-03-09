@@ -13,7 +13,7 @@ The easiest is to create a CSR using OpenSSL, issue the certificate from the org
 5. Upload the root CA certificate to DNAC Trustpool (System Settings -> Settings -> Trustpool)
 6. Upload certificate chain to DNAC in format of your choosing, including the key. Make sure it contains all certificates (root + intermediate + issued). If PEM, the chain order needs to be; 1) issued cert, 2) intermediate cert, 3) root cert.
 
-If all went well, the following must now be done;
+If this is done on an exisiting setup (i.e. after ISE has been set up, and devices has been provisioned), the following must now be done;
 
 1. Edit ISE-settings (System Settings -> Settings -> Authentication and Policy Servers), choose the ISE-server(s) added
 2. Enter the ISE-password again, and hit "Apply"
