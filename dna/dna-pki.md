@@ -22,7 +22,7 @@ If all went well, the following must now be done;
 
 If you have to change the certificate after adding devices, we need to manually change it on all the devices using a template.
 
-1. Download the CA cert in pem format from http://dnac-ip/ca/pem
+1. Download the CA cert in PEM format from http://dnac-fqdn-or-ip/ca/pem
 2. Navigate to "Tools > Template editor"
 3. Create a "New Project > Template"
 4. Use the following for the contents of the template:
@@ -41,7 +41,7 @@ exit
 <$multiCommandTag>
 crypto pki authenticate DNAC-CA
 -----BEGIN CERTIFICATE-----
-<<< copy the PEM certificate contents/DNAC-CA downloaded from http://dnac-ip/ca/pem >>>
+<<< copy the PEM certificate contents/DNAC-CA downloaded from http://dnac-fqdn-or-ip/ca/pem >>>
 -----END CERTIFICATE-----
 quit
 yes
