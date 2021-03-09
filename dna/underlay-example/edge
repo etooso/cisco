@@ -1,0 +1,184 @@
+-- Example configuration of Edge nodes --
+-------------------------------------------------------------------------------------------
+Edge1:
+-------------------------------------------------------------------------------------------
+conf t
+!
+!
+hostname Edge1-9300
+!
+enable secret Dnac123!
+!
+no aaa new-model
+!
+ip routing
+!
+ip multicast-routing
+ip multicast multipath
+ip domain name cisco.com
+!
+system mtu 9100
+!
+username netadmin privilege 15 password 0 Dnac123!
+!
+snmp-server community Dnac123! rw
+snmp-server community !123Dnac ro
+!
+no ip domain lookup
+!
+crypto key generate rsa modulus 1024
+!
+router isis
+net 49.0000.0100.0421.2005.00
+domain-password C1sco123
+metric-style wide
+log-adjacency-changes
+nsf ietf
+bfd all-interfaces
+!
+interface Loopback0
+ip address 192.168.200.5 255.255.255.255
+ip router isis
+bfd interval 500 min_rx 500 multiplier 3
+no bfd echo
+!
+interface GigabitEthernet1/0/23
+description "Connection to Border2 "
+no switchport
+ip address 192.168.1.110 255.255.255.252
+ip pim sparse-mode
+ip router isis
+bfd interval 500 min_rx 500 multiplier 3
+no bfd echo
+no shut
+!
+interface GigabitEthernet1/0/24
+description "Connection to Border1"
+no switchport
+ip address 192.168.1.102 255.255.255.252
+ip pim sparse-mode
+bfd interval 500 min_rx 500 multiplier 3
+ip router isis
+no bfd echo
+no shut
+!
+ip forward-protocol nd
+ip pim ssm default
+!
+line con 0
+exec-timeout 0 0
+logging synchronous
+login local
+stopbits 1
+line vty 0 4
+exec-timeout 0 0
+login local
+transport input all
+line vty 5 97
+exec-timeout 0 0
+login local
+transport input all
+!
+vlan 5
+no shut
+!
+! $$ Assurance Configuration $$
+!
+int vlan 5
+ip address 172.16.20.1 255.255.255.0
+ip helper-address 10.172.3.220
+ip router isis
+bfd interval 500 min_rx 500 multiplier 3
+no shut
+exit
+!
+int range gig 1/0/11-12
+switchport
+switchport mode access
+switchport access vlan 5
+no shut
+exit
+!
+
+
+
+-------------------------------------------------------------------------------------------
+Edge2:
+-------------------------------------------------------------------------------------------
+conf t
+!
+!
+hostname Edge2-9300
+!
+enable secret Dnac123!
+!
+no aaa new-model
+!
+ip routing
+!
+ip multicast-routing
+ip multicast multipath
+ip domain-name cisco.com
+!
+system mtu 9100
+!
+username netadmin privilege 15 password 0 Dnac123!
+!
+snmp-server community Dnac123! rw
+snmp-server community !123Dnac ro
+!
+no ip domain lookup
+!
+crypto key generate rsa modulus 1024
+!
+router isis
+net 49.0000.0100.0421.2006.00
+domain-password C1sco123
+metric-style wide
+log-adjacency-changes
+nsf ietf
+bfd all-interfaces
+!
+interface Loopback0
+ip address 192.168.200.6 255.255.255.255
+ip router isis
+bfd interval 500 min_rx 500 multiplier 3
+no bfd echo
+!
+interface GigabitEthernet1/0/23
+description "Connection to Border-1"
+no switchport
+ip address 192.168.1.106 255.255.255.252
+ip pim sparse-mode
+ip router isis
+bfd interval 500 min_rx 500 multiplier 3
+no bfd echo
+no shut
+!
+interface GigabitEthernet1/0/24
+description "Connection to Border-2"
+no switchport
+ip address 192.168.1.114 255.255.255.252
+ip pim sparse-mode
+ip router isis
+bfd interval 500 min_rx 500 multiplier 3
+no bfd echo
+no shut
+!
+ip forward-protocol nd
+ip pim ssm default
+!
+line con 0
+exec-timeout 0 0
+logging synchronous
+login local
+stopbits 1
+line vty 0 4
+exec-timeout 0 0
+login local
+transport input all
+line vty 5 97
+exec-timeout 0 0
+login local
+transport input all
+!
