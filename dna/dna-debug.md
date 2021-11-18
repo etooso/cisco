@@ -224,4 +224,21 @@ select * from commonresourceversion;
 cat /etc/maglev/release-info.yaml
 etcdctl ls /maglev/system_updates/cluster_update_jobs/version
 ```
+**Devices stuck with internal error in inventory**
+Find UUID
 
+docker exec -it $(docker ps | awk '/postgres_postgres-[0-2]+_fusion/ {print $1}') psql -U apic_em_user -d campus -h localhost
+ select instanceuuid from managedelementinterface where managementaddress='10.2.136.x';
+Control-D
+
+Get token
+curl -X "POST" -u admin https://DNAIP/api/system/v1/auth/token 
+
+Device cleanup
+curl -X PUT -H "X-AUTH-TOKEN:INSERT TOKEN" -H "content-type: application/json" -d 'Fill inn UUID' https://DNAIP/api/v1/network-device/sync-with-cleanup?forceSync=true --insecure
+
+The device will resync
+
+Do a manual resync
+
+If this does not help, remove and add the device from DNA
